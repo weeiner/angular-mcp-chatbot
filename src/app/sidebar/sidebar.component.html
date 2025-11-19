@@ -1,0 +1,61 @@
+<!-- Custom Sidebar -->
+<div
+  class="fixed top-0 left-0 h-screen w-80 bg-base-200 shadow-xl transition-transform duration-300 z-50"
+  [class.-translate-x-full]="!isOpen"
+>
+  <div class="flex flex-col h-full p-4">
+    <!-- Sidebar header -->
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold">Agent X</h2>
+      <button (click)="closeSidebar()" class="btn btn-sm btn-circle btn-ghost">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider mt-0"></div>
+
+    <!-- Chat history section (placeholder for future) -->
+    <div class="flex-1 overflow-y-auto">
+      <h3 class="text-sm font-semibold opacity-60 mb-3">Chat History</h3>
+      <p class="text-sm opacity-50 italic">No previous conversations</p>
+
+      <!-- Future chat history items will go here -->
+    </div>
+
+    <!-- Sidebar footer -->
+    <div class="mt-auto pt-4">
+      <div class="divider mt-0"></div>
+      <button class="btn btn-outline btn-sm w-full">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+        New Chat
+      </button>
+    </div>
+  </div>
+</div>

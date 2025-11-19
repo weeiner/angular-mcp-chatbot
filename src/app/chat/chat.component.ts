@@ -22,7 +22,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   loading = false;
   conversationId = "";
   isAtBottom$ = this.scrollService.isAtBottom$;
-  sidebarOpen = false;
 
   @ViewChild("scroll") private scrollContainer!: ElementRef;
   @ViewChild("messageInput") private messageInput!: ElementRef;
