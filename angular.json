@@ -1,0 +1,36 @@
+{
+  "$schema": "https://angular.io/cli/schema.json",
+  "version": 1,
+  "projects": {
+    "angular-mcp-chatbot": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/angular-mcp-chatbot",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.app.json",
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
+            "scripts": []
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "angular-mcp-chatbot:build"
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": "c177b7f0-2b66-4299-98a8-d943638bab3c"
+  }
+}
