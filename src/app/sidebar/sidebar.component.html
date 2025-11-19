@@ -1,12 +1,13 @@
 <!-- Custom Sidebar -->
 <div
-  class="fixed top-0 left-0 h-screen w-80 bg-base-200 shadow-xl transition-transform duration-300 z-50"
-  [class.-translate-x-full]="!isOpen"
+  class="h-screen bg-base-200 shadow-xl transition-all duration-300 flex-shrink-0"
+  [style.width]="isOpen ? '320px' : '0'"
+  [style.overflow]="isOpen ? 'visible' : 'hidden'"
 >
-  <div class="flex flex-col h-full p-4">
+  <div class="flex flex-col h-full p-4" [style.width]="'320px'">
     <!-- Sidebar header -->
     <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-bold">Agent X</h2>
+      <h2 class="text-2xl font-bold">Chatbot</h2>
       <button (click)="closeSidebar()" class="btn btn-sm btn-circle btn-ghost">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -30,32 +31,57 @@
 
     <!-- Chat history section (placeholder for future) -->
     <div class="flex-1 overflow-y-auto">
-      <h3 class="text-sm font-semibold opacity-60 mb-3">Chat History</h3>
-      <p class="text-sm opacity-50 italic">No previous conversations</p>
+      <h3 class="text-sm font-semibold opacity-60 mb-3">Today</h3>
 
-      <!-- Future chat history items will go here -->
+      <!-- Sample chat history items -->
+      <div class="space-y-2">
+        <button
+          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
+        >
+          Testing
+        </button>
+        <button
+          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
+        >
+          Testing 1234
+        </button>
+        <button
+          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
+        >
+          Test
+        </button>
+        <button
+          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
+        >
+          Test
+        </button>
+        <button
+          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
+        >
+          Testing
+        </button>
+        <button
+          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
+        >
+          Next.js Advantages
+        </button>
+      </div>
+
+      <p class="text-xs opacity-50 italic mt-4">
+        You have reached the end of your chat history.
+      </p>
     </div>
 
     <!-- Sidebar footer -->
-    <div class="mt-auto pt-4">
-      <div class="divider mt-0"></div>
-      <button class="btn btn-outline btn-sm w-full">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4 mr-2"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 4v16m8-8H4"
-          />
-        </svg>
-        New Chat
-      </button>
+    <div class="mt-auto pt-4 border-t border-base-300">
+      <div class="flex items-center gap-3 p-2">
+        <div class="avatar placeholder">
+          <div class="bg-neutral text-neutral-content rounded-full w-8">
+            <span class="text-xs">G</span>
+          </div>
+        </div>
+        <span class="text-sm font-medium">Guest</span>
+      </div>
     </div>
   </div>
 </div>
