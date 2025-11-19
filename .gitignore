@@ -3,3 +3,5 @@ node_modules
 
 *.tsbuildinfo
 *.jsn
+
+angular-compiler.db-lock
