@@ -7,7 +7,7 @@
   <div class="flex flex-col h-full p-4" [style.width]="'320px'">
     <!-- Sidebar header -->
     <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-bold">Chatbot</h2>
+      <h2 class="text-2xl font-bold">Agent X</h2>
       <button (click)="closeSidebar()" class="btn btn-sm btn-circle btn-ghost">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -29,47 +29,35 @@
     <!-- Divider -->
     <div class="divider mt-0"></div>
 
-    <!-- Chat history section (placeholder for future) -->
+    <!-- Chat history section -->
     <div class="flex-1 overflow-y-auto">
-      <h3 class="text-sm font-semibold opacity-60 mb-3">Today</h3>
+      <!-- When chat history exists -->
+      <ng-container *ngIf="chatHistory.length > 0">
+        <h3 class="text-sm font-semibold opacity-60 mb-3">Today</h3>
 
-      <!-- Sample chat history items -->
-      <div class="space-y-2">
-        <button
-          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
-        >
-          Testing
-        </button>
-        <button
-          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
-        >
-          Testing 1234
-        </button>
-        <button
-          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
-        >
-          Test
-        </button>
-        <button
-          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
-        >
-          Test
-        </button>
-        <button
-          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
-        >
-          Testing
-        </button>
-        <button
-          class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
-        >
-          Next.js Advantages
-        </button>
+        <div class="space-y-2">
+          <button
+            *ngFor="let chat of chatHistory"
+            class="w-full text-left p-2 rounded hover:bg-base-300 transition-colors text-sm"
+          >
+            {{ chat.title }}
+          </button>
+        </div>
+
+        <p class="text-xs opacity-50 italic mt-4">
+          You have reached the end of your chat history.
+        </p>
+      </ng-container>
+
+      <!-- When chat history is empty -->
+      <div
+        *ngIf="chatHistory.length === 0"
+        class="flex items-center justify-center h-full"
+      >
+        <p class="text-sm opacity-50 italic text-center">
+          Your chat history is empty
+        </p>
       </div>
-
-      <p class="text-xs opacity-50 italic mt-4">
-        You have reached the end of your chat history.
-      </p>
     </div>
 
     <!-- Sidebar footer -->

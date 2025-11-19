@@ -9,6 +9,9 @@ export class SidebarComponent {
   @Input() isOpen = false;
   @Output() isOpenChange = new EventEmitter<boolean>();
 
+  // Chat history - empty for now
+  chatHistory: any[] = [];
+
   closeSidebar() {
     this.isOpen = false;
     this.isOpenChange.emit(this.isOpen);
