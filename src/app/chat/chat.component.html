@@ -160,35 +160,9 @@
         </div>
       </div>
 
-      <!-- Input area with buttons -->
-      <div class="relative flex items-end">
-        <button
-          class="absolute left-2 bottom-2 btn btn-circle bg-transparent hover:bg-base-100 border-none z-10"
-          (click)="fileInput.click()"
-          [disabled]="loading"
-          title="Upload files"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            class="w-5 h-5 text-gray-400"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M18.97 3.659a2.25 2.25 0 00-3.182 0l-10.94 10.94a3.75 3.75 0 105.304 5.303l7.693-7.693a.75.75 0 011.06 1.06l-7.693 7.693a5.25 5.25 0 11-7.424-7.424l10.939-10.94a3.75 3.75 0 115.303 5.304L9.097 18.835l-.008.008-.007.007-.002.002-.003.002A2.25 2.25 0 015.91 15.66l7.81-7.81a.75.75 0 011.061 1.06l-7.81 7.81a.75.75 0 001.054 1.068L18.97 6.84a2.25 2.25 0 000-3.182z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </button>
-        <input
-          #fileInput
-          type="file"
-          multiple
-          class="hidden"
-          (change)="onFileSelect($event)"
-          accept="*/*"
-        />
+      <!-- Input area with textarea and buttons -->
+      <div class="flex flex-col p-2">
+        <!-- Textarea -->
         <textarea
           #messageInput
           [(ngModel)]="inputText"
@@ -196,24 +170,58 @@
           (input)="autoResize($event)"
           placeholder="Send a message..."
           rows="3"
-          class="textarea flex-1 bg-transparent border-none focus:outline-none resize-none overflow-y-auto min-h-[80px] max-h-[200px] py-3 pl-14 pr-14"
+          class="textarea w-full bg-transparent border-none focus:outline-none resize-none overflow-y-auto min-h-[80px] max-h-[200px] py-3 px-3"
         ></textarea>
-        <button
-          class="absolute right-2 bottom-2 btn btn-circle bg-transparent hover:bg-base-100 border-none z-10"
-          (click)="send()"
-          [disabled]="loading"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            class="w-5 h-5 text-gray-400"
+
+        <!-- Buttons row -->
+        <div class="flex items-center justify-end gap-2 mt-1">
+          <!-- Upload button -->
+          <button
+            class="btn btn-circle bg-transparent hover:bg-base-100 border-none flex-shrink-0"
+            (click)="fileInput.click()"
+            [disabled]="loading"
+            title="Upload files"
           >
-            <path
-              d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z"
-            />
-          </svg>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="w-5 h-5 text-gray-400"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M18.97 3.659a2.25 2.25 0 00-3.182 0l-10.94 10.94a3.75 3.75 0 105.304 5.303l7.693-7.693a.75.75 0 011.06 1.06l-7.693 7.693a5.25 5.25 0 11-7.424-7.424l10.939-10.94a3.75 3.75 0 115.303 5.304L9.097 18.835l-.008.008-.007.007-.002.002-.003.002A2.25 2.25 0 015.91 15.66l7.81-7.81a.75.75 0 011.061 1.06l-7.81 7.81a.75.75 0 001.054 1.068L18.97 6.84a2.25 2.25 0 000-3.182z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+          <input
+            #fileInput
+            type="file"
+            multiple
+            class="hidden"
+            (change)="onFileSelect($event)"
+            accept="*/*"
+          />
+
+          <!-- Send button -->
+          <button
+            class="btn btn-circle bg-transparent hover:bg-base-100 border-none flex-shrink-0"
+            (click)="send()"
+            [disabled]="loading"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="w-5 h-5 text-gray-400"
+            >
+              <path
+                d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
 
