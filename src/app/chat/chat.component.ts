@@ -1,6 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  OnDestroy,
+} from "@angular/core";
 import { firstValueFrom } from "rxjs";
 import { ChatService } from "../services/chat.service";
+import { ScrollToBottomService } from "../services/scroll-to-bottom.service";
 import { Message } from "../models/message.model";
 
 @Component({
@@ -8,16 +16,20 @@ import { Message } from "../models/message.model";
   templateUrl: "./chat.component.html",
   styleUrls: ["./chat.component.css"],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   messages: Message[] = [];
   inputText = "";
   loading = false;
   conversationId = "";
+  isAtBottom$ = this.scrollService.isAtBottom$;
 
   @ViewChild("scroll") private scrollContainer!: ElementRef;
   @ViewChild("messageInput") private messageInput!: ElementRef;
 
-  constructor(private chatService: ChatService) {}
+  constructor(
+    private chatService: ChatService,
+    public scrollService: ScrollToBottomService
+  ) {}
 
   ngOnInit(): void {
     // initialize conversationId or reuse one from localStorage/session
@@ -26,6 +38,21 @@ export class ChatComponent implements OnInit {
     localStorage.setItem("mcp-chat-conversationId", this.conversationId);
 
     this.loadHistory();
+  }
+
+  ngAfterViewInit(): void {
+    // Initialize the scroll service with our container
+    this.scrollService.setContainer(this.scrollContainer);
+
+    // Initial scroll to bottom
+    setTimeout(() => {
+      this.scrollService.scrollToBottom("auto");
+    }, 0);
+  }
+
+  ngOnDestroy(): void {
+    // Clean up observers
+    this.scrollService.cleanup();
   }
 
   loadHistory() {
@@ -42,8 +69,6 @@ export class ChatComponent implements OnInit {
         timestamp: Date.now(),
       });
     }
-
-    setTimeout(() => this.scrollToBottom(), 0);
   }
 
   saveHistory() {
@@ -82,7 +107,11 @@ export class ChatComponent implements OnInit {
     }, 0);
 
     this.saveHistory();
-    this.scrollToBottom();
+
+    // Force scroll to bottom after user message
+    setTimeout(() => {
+      this.scrollService.scrollToBottom("smooth");
+    }, 100);
 
     this.loading = true;
     try {
@@ -97,7 +126,11 @@ export class ChatComponent implements OnInit {
       };
       this.messages.push(aiMsg);
       this.saveHistory();
-      setTimeout(() => this.scrollToBottom(), 50);
+
+      // Force scroll to bottom after AI response
+      setTimeout(() => {
+        this.scrollService.scrollToBottom("smooth");
+      }, 100);
     } catch (err) {
       const errMsg: Message = {
         id: this.makeId(),
@@ -107,18 +140,18 @@ export class ChatComponent implements OnInit {
       };
       this.messages.push(errMsg);
       this.saveHistory();
+
+      // Force scroll to bottom after error message
+      setTimeout(() => {
+        this.scrollService.scrollToBottom("smooth");
+      }, 100);
     } finally {
       this.loading = false;
     }
   }
 
   scrollToBottom() {
-    try {
-      const el = this.scrollContainer?.nativeElement;
-      if (el) el.scrollTop = el.scrollHeight;
-    } catch (e) {
-      // ignore
-    }
+    this.scrollService.scrollToBottom("smooth");
   }
 
   autoResize(event: Event) {
