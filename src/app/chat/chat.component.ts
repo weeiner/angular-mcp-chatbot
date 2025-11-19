@@ -22,6 +22,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   loading = false;
   conversationId = "";
   isAtBottom$ = this.scrollService.isAtBottom$;
+  selectedFiles: File[] = [];
 
   @ViewChild("scroll") private scrollContainer!: ElementRef;
   @ViewChild("messageInput") private messageInput!: ElementRef;
@@ -190,12 +191,32 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     // Save the new chat state
     this.saveHistory();
 
-    // Clear input
+    // Clear input and files
     this.inputText = "";
+    this.selectedFiles = [];
 
     // Scroll to top
     setTimeout(() => {
       this.scrollService.scrollToBottom("auto");
     }, 100);
+  }
+
+  onFileSelect(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      // Add new files to the existing array
+      const newFiles = Array.from(input.files);
+      this.selectedFiles = [...this.selectedFiles, ...newFiles];
+
+      // Reset the input so the same file can be selected again if needed
+      input.value = "";
+
+      console.log("Selected files:", this.selectedFiles);
+      // TODO: Implement file upload logic here
+    }
+  }
+
+  removeFile(index: number) {
+    this.selectedFiles.splice(index, 1);
   }
 }
