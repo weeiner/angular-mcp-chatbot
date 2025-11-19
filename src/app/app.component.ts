@@ -3,11 +3,11 @@ import { Component } from "@angular/core";
 @Component({
   selector: "app-root",
   template: `
-    <div class="app-shell h-screen flex flex-col relative overflow-hidden">
+    <div class="app-shell h-screen flex flex-col overflow-hidden">
       <app-sidebar [(isOpen)]="sidebarOpen"></app-sidebar>
 
       <!-- Header with menu button -->
-      <div class="absolute top-4 left-4 z-20">
+      <div class="w-full p-4">
         <button
           (click)="sidebarOpen = !sidebarOpen"
           class="btn btn-circle btn-ghost"
