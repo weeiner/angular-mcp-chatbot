@@ -171,4 +171,31 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   makeId() {
     return Math.random().toString(36).substring(2, 9);
   }
+
+  resetChat() {
+    // Generate new conversation ID
+    this.conversationId = this.makeId();
+    localStorage.setItem("mcp-chat-conversationId", this.conversationId);
+
+    // Clear messages and show welcome message
+    this.messages = [
+      {
+        id: this.makeId(),
+        role: "ai",
+        text: "Hello there!\nHow can I help you today?",
+        timestamp: Date.now(),
+      },
+    ];
+
+    // Save the new chat state
+    this.saveHistory();
+
+    // Clear input
+    this.inputText = "";
+
+    // Scroll to top
+    setTimeout(() => {
+      this.scrollService.scrollToBottom("auto");
+    }, 100);
+  }
 }

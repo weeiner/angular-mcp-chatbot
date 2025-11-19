@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
+import { ChatComponent } from "./chat/chat.component";
 
 @Component({
   selector: "app-root",
@@ -59,17 +60,19 @@ import { Component } from "@angular/core";
         </div>
 
         <main class="flex-1 w-full overflow-hidden">
-          <app-chat></app-chat>
+          <app-chat #chatComponent></app-chat>
         </main>
       </div>
     </div>
   `,
 })
 export class AppComponent {
+  @ViewChild("chatComponent") chatComponent!: ChatComponent;
   sidebarOpen = false;
 
   startNewChat() {
-    // TODO: Implement new chat functionality
-    console.log("Starting new chat...");
+    if (this.chatComponent) {
+      this.chatComponent.resetChat();
+    }
   }
 }
