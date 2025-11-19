@@ -8,6 +8,7 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
 export class SidebarComponent {
   @Input() isOpen = false;
   @Output() isOpenChange = new EventEmitter<boolean>();
+  @Output() newChat = new EventEmitter<void>();
 
   // Chat history - empty for now
   chatHistory: any[] = [];
@@ -15,5 +16,9 @@ export class SidebarComponent {
   closeSidebar() {
     this.isOpen = false;
     this.isOpenChange.emit(this.isOpen);
+  }
+
+  onNewChat() {
+    this.newChat.emit();
   }
 }
