@@ -4,8 +4,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 
 import { AppComponent } from "./app.component";
-import { ChatComponent } from "./chat/chat.component";
-import { SidebarComponent } from "./sidebar/sidebar.component";
+import { ChatComponent } from "./components/chat/chat.component";
+import { SidebarComponent } from "./components/sidebar/sidebar.component";
 
 @NgModule({
   declarations: [AppComponent, ChatComponent, SidebarComponent],

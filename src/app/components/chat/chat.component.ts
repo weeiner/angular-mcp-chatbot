@@ -7,9 +7,9 @@ import {
   OnDestroy,
 } from "@angular/core";
 import { firstValueFrom } from "rxjs";
-import { ChatService } from "../services/chat.service";
-import { ScrollToBottomService } from "../services/scroll-to-bottom.service";
-import { Message } from "../models/message.model";
+import { ChatService } from "../../services/chat.service";
+import { ScrollToBottomService } from "../../services/scroll-to-bottom.service";
+import { Message } from "../../models/message.model";
 
 @Component({
   selector: "app-chat",
