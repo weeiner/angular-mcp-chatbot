@@ -1,12 +1,8 @@
 <div class="flex flex-col h-full w-full relative">
   <!-- Welcome message centered in the entire viewport -->
-  <div
-    *ngIf="messages.length === 1 && messages[0].role === 'ai'"
-    class="flex flex-col items-center justify-center text-center absolute inset-0 pointer-events-none z-10 pb-32"
-  >
-    <h2 class="text-3xl font-bold mb-2">Hello there!</h2>
-    <p class="text-lg opacity-70">How can I help you today?</p>
-  </div>
+  <app-welcome-message
+    [show]="messages.length === 1 && messages[0].role === 'ai'"
+  ></app-welcome-message>
 
   <div
     #scroll
@@ -34,105 +30,10 @@
             (messages.length === 1 && messages[0].role !== 'ai')
           "
         >
-          <div *ngFor="let m of messages" class="mb-6">
-            <!-- AI message without bubble -->
-            <div *ngIf="m.role === 'ai'" class="flex items-start gap-3">
-              <div class="avatar placeholder">
-                <div
-                  class="bg-neutral text-neutral-content rounded-full w-8 h-8 flex items-center justify-center"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-5 h-5"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div class="flex-1 max-w-3xl">
-                <div
-                  class="whitespace-pre-wrap break-words text-base leading-7"
-                >
-                  {{ m.text }}
-                </div>
-                <div class="text-xs opacity-50 mt-2">
-                  {{ m.timestamp | date : "shortTime" }}
-                </div>
-              </div>
-            </div>
-
-            <!-- User message with bubble -->
-            <div *ngIf="m.role === 'user'" class="flex justify-end">
-              <div class="flex flex-col items-end gap-2 max-w-[70%]">
-                <!-- Display files if present -->
-                <div
-                  *ngIf="m.files && m.files.length > 0"
-                  class="flex flex-col gap-2 w-full"
-                >
-                  <div
-                    *ngFor="let file of m.files"
-                    class="flex items-center gap-3 bg-base-200 border border-base-300 rounded-xl px-4 py-3 hover:bg-base-300 transition-colors"
-                  >
-                    <div
-                      class="flex items-center justify-center w-10 h-10 rounded-lg flex-shrink-0"
-                      [ngClass]="{
-                        'bg-red-500': file.type.includes('pdf'),
-                        'bg-blue-500':
-                          file.type.includes('word') ||
-                          file.type.includes('document'),
-                        'bg-green-500':
-                          file.type.includes('spreadsheet') ||
-                          file.type.includes('excel'),
-                        'bg-gray-500':
-                          !file.type.includes('pdf') &&
-                          !file.type.includes('word') &&
-                          !file.type.includes('document') &&
-                          !file.type.includes('spreadsheet') &&
-                          !file.type.includes('excel')
-                      }"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="white"
-                        class="w-6 h-6"
-                      >
-                        <path
-                          d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625z"
-                        />
-                        <path
-                          d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="flex flex-col flex-1 min-w-0">
-                      <span class="text-sm font-medium truncate">{{
-                        file.name
-                      }}</span>
-                      <span class="text-xs opacity-60">{{ file.type }}</span>
-                    </div>
-                  </div>
-                </div>
-                <!-- Display text if present -->
-                <div
-                  *ngIf="m.text"
-                  class="bg-slate-700 text-white rounded-3xl px-5 py-3 break-words overflow-wrap-anywhere"
-                >
-                  <div class="whitespace-pre-wrap break-words">
-                    {{ m.text }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <app-message-item
+            *ngFor="let m of messages"
+            [message]="m"
+          ></app-message-item>
         </ng-container>
 
         <!-- Bottom marker element for scroll tracking -->
@@ -165,126 +66,11 @@
     </button>
   </div>
 
-  <div class="p-4 border-white/10">
-    <div
-      class="relative flex flex-col bg-base-300 rounded-lg max-w-4xl mx-auto"
-    >
-      <!-- Display selected files inside chatbox -->
-      <div
-        *ngIf="selectedFiles.length > 0"
-        class="flex gap-2 overflow-x-auto px-3 pt-3 pb-2 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-transparent"
-      >
-        <div
-          *ngFor="let file of selectedFiles; let i = index"
-          class="flex items-center gap-2 bg-base-100 rounded-lg px-3 py-2 text-sm flex-shrink-0 min-w-fit"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            class="w-4 h-4 flex-shrink-0"
-          >
-            <path
-              d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625z"
-            />
-            <path
-              d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z"
-            />
-          </svg>
-          <span class="whitespace-nowrap max-w-[200px] truncate">{{
-            file.name
-          }}</span>
-          <button
-            (click)="removeFile(i)"
-            class="btn btn-ghost btn-xs btn-circle flex-shrink-0"
-            type="button"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              class="w-3 h-3"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Input area with textarea and buttons -->
-      <div class="flex flex-col p-2">
-        <!-- Textarea -->
-        <textarea
-          #messageInput
-          [(ngModel)]="inputText"
-          (keydown.enter)="onEnterPress($event)"
-          (input)="autoResize($event)"
-          placeholder="Send a message..."
-          rows="3"
-          class="textarea w-full bg-transparent border-none focus:outline-none resize-none overflow-y-auto min-h-[80px] max-h-[200px] py-3 px-3"
-        ></textarea>
-
-        <!-- Buttons row -->
-        <div class="flex items-center justify-end gap-2 mt-1">
-          <!-- Upload button -->
-          <button
-            class="btn btn-circle bg-transparent hover:bg-base-100 border-none flex-shrink-0"
-            (click)="fileInput.click()"
-            [disabled]="loading"
-            title="Upload files"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              class="w-5 h-5 text-gray-400"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M18.97 3.659a2.25 2.25 0 00-3.182 0l-10.94 10.94a3.75 3.75 0 105.304 5.303l7.693-7.693a.75.75 0 011.06 1.06l-7.693 7.693a5.25 5.25 0 11-7.424-7.424l10.939-10.94a3.75 3.75 0 115.303 5.304L9.097 18.835l-.008.008-.007.007-.002.002-.003.002A2.25 2.25 0 015.91 15.66l7.81-7.81a.75.75 0 011.061 1.06l-7.81 7.81a.75.75 0 001.054 1.068L18.97 6.84a2.25 2.25 0 000-3.182z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
-          <input
-            #fileInput
-            type="file"
-            multiple
-            class="hidden"
-            (change)="onFileSelect($event)"
-            accept="*/*"
-          />
-
-          <!-- Send button -->
-          <button
-            class="btn btn-circle bg-transparent hover:bg-base-100 border-none flex-shrink-0"
-            (click)="send()"
-            [disabled]="loading"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              class="w-5 h-5 text-gray-400"
-            >
-              <path
-                d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div
-      *ngIf="loading"
-      class="mt-2 text-sm opacity-70 flex items-center gap-2 max-w-4xl mx-auto"
-    >
-      <span class="loading loading-dots"></span> Sending...
-    </div>
-  </div>
+  <app-chat-input
+    [loading]="loading"
+    [selectedFiles]="selectedFiles"
+    (sendMessage)="handleSendMessage($event)"
+    (removeFile)="removeFile($event)"
+    (filesSelected)="handleFilesSelected($event)"
+  ></app-chat-input>
 </div>

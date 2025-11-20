@@ -18,14 +18,12 @@ import { Message } from "../../models/message.model";
 })
 export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   messages: Message[] = [];
-  inputText = "";
   loading = false;
   conversationId = "";
   isAtBottom$ = this.scrollService.isAtBottom$;
   selectedFiles: File[] = [];
 
   @ViewChild("scroll") private scrollContainer!: ElementRef;
-  @ViewChild("messageInput") private messageInput!: ElementRef;
 
   constructor(
     private chatService: ChatService,
@@ -77,9 +75,9 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     localStorage.setItem(key, JSON.stringify(this.messages));
   }
 
-  async send() {
-    const text = this.inputText?.trim();
-    if (!text && this.selectedFiles.length === 0) return;
+  async handleSendMessage(event: { text: string; files: File[] }) {
+    const text = event.text?.trim();
+    if (!text && event.files.length === 0) return;
 
     // Remove welcome message if it exists (first message from AI)
     if (
@@ -96,8 +94,8 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       text: text || "",
       timestamp: Date.now(),
       files:
-        this.selectedFiles.length > 0
-          ? this.selectedFiles.map((f) => ({
+        event.files.length > 0
+          ? event.files.map((f) => ({
               name: f.name,
               size: f.size,
               type: f.type,
@@ -108,17 +106,8 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     this.messages.push(userMsg);
     this.saveHistory();
 
-    // Clear input and files immediately (before async operations)
-    this.inputText = "";
-    const tempFiles = this.selectedFiles;
+    // Clear files
     this.selectedFiles = [];
-
-    // Reset textarea height
-    setTimeout(() => {
-      if (this.messageInput?.nativeElement) {
-        this.messageInput.nativeElement.style.height = "auto";
-      }
-    }, 0);
 
     // Force scroll to bottom after user message
     setTimeout(() => {
@@ -166,18 +155,8 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scrollService.scrollToBottom("smooth");
   }
 
-  autoResize(event: Event) {
-    const textarea = event.target as HTMLTextAreaElement;
-    textarea.style.height = "auto";
-    textarea.style.height = textarea.scrollHeight + "px";
-  }
-
-  onEnterPress(event: KeyboardEvent) {
-    // Send on Enter (without Shift), new line on Shift+Enter
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      this.send();
-    }
+  handleFilesSelected(files: File[]) {
+    this.selectedFiles.push(...files);
   }
 
   makeId() {
@@ -202,28 +181,13 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     // Save the new chat state
     this.saveHistory();
 
-    // Clear input and files
-    this.inputText = "";
+    // Clear files
     this.selectedFiles = [];
 
     // Scroll to top
     setTimeout(() => {
       this.scrollService.scrollToBottom("auto");
     }, 100);
-  }
-
-  onFileSelect(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      // Add new files to the existing array
-      const newFiles = Array.from(input.files);
-      this.selectedFiles.push(...newFiles);
-
-      // Reset the input so the same file can be selected again if needed
-      input.value = "";
-
-      console.log("Selected files:", this.selectedFiles);
-    }
   }
 
   removeFile(index: number) {
