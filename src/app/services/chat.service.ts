@@ -6,7 +6,7 @@ import { environment } from "../../environments/environment";
 
 @Injectable({ providedIn: "root" })
 export class ChatService {
-  private base = environment.mcpUrl || "";
+  private base = environment.mcpClientURL || "";
 
   constructor(private http: HttpClient) {}
 
