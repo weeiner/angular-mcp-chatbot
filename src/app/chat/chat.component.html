@@ -71,10 +71,65 @@
 
             <!-- User message with bubble -->
             <div *ngIf="m.role === 'user'" class="flex justify-end">
-              <div
-                class="bg-blue-600 text-white rounded-3xl px-5 py-3 max-w-[70%] break-words overflow-wrap-anywhere"
-              >
-                <div class="whitespace-pre-wrap break-words">{{ m.text }}</div>
+              <div class="flex flex-col items-end gap-2 max-w-[70%]">
+                <!-- Display files if present -->
+                <div
+                  *ngIf="m.files && m.files.length > 0"
+                  class="flex flex-col gap-2 w-full"
+                >
+                  <div
+                    *ngFor="let file of m.files"
+                    class="flex items-center gap-3 bg-base-200 border border-base-300 rounded-xl px-4 py-3 hover:bg-base-300 transition-colors"
+                  >
+                    <div
+                      class="flex items-center justify-center w-10 h-10 rounded-lg flex-shrink-0"
+                      [ngClass]="{
+                        'bg-red-500': file.type.includes('pdf'),
+                        'bg-blue-500':
+                          file.type.includes('word') ||
+                          file.type.includes('document'),
+                        'bg-green-500':
+                          file.type.includes('spreadsheet') ||
+                          file.type.includes('excel'),
+                        'bg-gray-500':
+                          !file.type.includes('pdf') &&
+                          !file.type.includes('word') &&
+                          !file.type.includes('document') &&
+                          !file.type.includes('spreadsheet') &&
+                          !file.type.includes('excel')
+                      }"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="white"
+                        class="w-6 h-6"
+                      >
+                        <path
+                          d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625z"
+                        />
+                        <path
+                          d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z"
+                        />
+                      </svg>
+                    </div>
+                    <div class="flex flex-col flex-1 min-w-0">
+                      <span class="text-sm font-medium truncate">{{
+                        file.name
+                      }}</span>
+                      <span class="text-xs opacity-60">{{ file.type }}</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Display text if present -->
+                <div
+                  *ngIf="m.text"
+                  class="bg-blue-600 text-white rounded-3xl px-5 py-3 break-words overflow-wrap-anywhere"
+                >
+                  <div class="whitespace-pre-wrap break-words">
+                    {{ m.text }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

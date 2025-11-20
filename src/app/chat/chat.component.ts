@@ -79,7 +79,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async send() {
     const text = this.inputText?.trim();
-    if (!text) return;
+    if (!text && this.selectedFiles.length === 0) return;
 
     // Remove welcome message if it exists (first message from AI)
     if (
@@ -93,12 +93,25 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     const userMsg: Message = {
       id: this.makeId(),
       role: "user",
-      text,
+      text: text || "",
       timestamp: Date.now(),
+      files:
+        this.selectedFiles.length > 0
+          ? this.selectedFiles.map((f) => ({
+              name: f.name,
+              size: f.size,
+              type: f.type,
+            }))
+          : undefined,
     };
 
     this.messages.push(userMsg);
+    this.saveHistory();
+
+    // Clear input and files immediately (before async operations)
     this.inputText = "";
+    const tempFiles = this.selectedFiles;
+    this.selectedFiles = [];
 
     // Reset textarea height
     setTimeout(() => {
@@ -106,8 +119,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
         this.messageInput.nativeElement.style.height = "auto";
       }
     }, 0);
-
-    this.saveHistory();
 
     // Force scroll to bottom after user message
     setTimeout(() => {
@@ -206,13 +217,12 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     if (input.files && input.files.length > 0) {
       // Add new files to the existing array
       const newFiles = Array.from(input.files);
-      this.selectedFiles = [...this.selectedFiles, ...newFiles];
+      this.selectedFiles.push(...newFiles);
 
       // Reset the input so the same file can be selected again if needed
       input.value = "";
 
       console.log("Selected files:", this.selectedFiles);
-      // TODO: Implement file upload logic here
     }
   }
 
